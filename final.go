@@ -75,6 +75,7 @@ type user struct {
 	Mode   string `json:"mode"`
 }
 
+// creating an interface and supporting functions
 type notifications interface {
 	sendMsg()
 }
