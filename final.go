@@ -46,7 +46,10 @@ func worker(id int, jobs <-chan user, results chan<- user) {
 func main() {
 	// here we have taken a json and converted it into a struct, also have used channels here and have defined a rate limit to 10
 	var arr []user
-	_ = json.Unmarshal([]byte(jsonStr), &arr)
+	err := json.Unmarshal([]byte(jsonStr), &arr)
+	if err != nil {
+		panic("Json Parsing: Please pass appropriate json")
+	}
 	const numJobs = 5
 	jobs := make(chan user, numJobs)
 	results := make(chan user, numJobs)
