@@ -1,16 +1,23 @@
 package main
 
+// importing the packages
 import (
 	"encoding/json"
 	"fmt"
 )
+
+//creating the constants
 
 const ema string = "email"
 const sm string = "sms"
 const cal string = "call"
 const all string = "all"
 
-var jsonStr string = `[{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"},{"name":"Sean","email":"hrstaa@gmail.com","mobile":"9970972420","mode":"email"}]`
+//have hardcoded the json containing name, email, mobile and mode of notification
+
+var jsonStr string = `[{"name":"Ray","email":"Ray@gmail.com","mobile":"8208943950","mode":"email"},{"name":"Mehul","email":"Mehul@gmail.com","mobile":"9970972420","mode":"sms"},{"name":"Bob","email":"Bob@gmail.com","mobile":"9970972421","mode":"call"},{"name":"abc","email":"abc@gmail.com","mobile":"9970972424","mode":"email"},{"name":"sana","email":"sana@gmail.com","mobile":"9970972420","mode":"call"},{"name":"Sean","email":"Sean@gmail.com","mobile":"8208943951","mode":"sms"},{"name":"shine","email":"shine@gmail.com","mobile":"99709445420","mode":"email"},{"name":"Ola","email":"Ola.com","mobile":"9970972420","mode":"sms"},{"name":"Jack","email":"jack@gmail.com","mobile":"9878972420","mode":"call"},{"name":"Meghan","email":"Meghan@gmail.com","mobile":"9878472420","mode":"sms"}]`
+
+// have created a worker pool to program the mode of notification
 
 func worker(id int, jobs <-chan user, results chan<- user) {
 	for j := range jobs {
@@ -37,12 +44,10 @@ func worker(id int, jobs <-chan user, results chan<- user) {
 }
 
 func main() {
-
-	//	fmt.Println(jsonStr)
+	// here we have taken a json and converted it into a struct, also have used channels here and have defined a rate limit to 10
 	var arr []user
 	_ = json.Unmarshal([]byte(jsonStr), &arr)
-	//fmt.Println(arr)
-	const numJobs = 1
+	const numJobs = 5
 	jobs := make(chan user, numJobs)
 	results := make(chan user, numJobs)
 
@@ -50,13 +55,8 @@ func main() {
 		go worker(w, jobs, results)
 	}
 
-	// for _, j := range arr {
-	// 	jobs <- j
-	// }
-
-	fmt.Println(len(arr))
-	for j := 0; j < len(arr); j++ {
-		jobs <- arr[j]
+	for _, j := range arr {
+		jobs <- j
 	}
 
 	close(jobs)
@@ -65,6 +65,8 @@ func main() {
 		<-results
 	}
 }
+
+//declared the struct and interface
 
 type user struct {
 	Name   string `json:"name"`
