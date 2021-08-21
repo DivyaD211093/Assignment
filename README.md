@@ -16,6 +16,6 @@ Remember that focus is to be given on -
 - I have created a consol based application for which I have taken a list of users from json in the hardcoded format. 
 - As per the requirements, the design pattern that I have used is factory pattern.
 - Have created a user array and did the unmarshalling on the json. Along with that have created two channels namely jobs and results.
-- Have created 5 jobs, and created a workerpool. To control the events hapenning I have applied a rate limiter to 10.
+- Have created 10 jobs, and created a workerpool. To control the events hapenning I have applied a rate limiter to 10.
 - In the worker function I have programed the notification mode and have print the message in that function for notifications. 
 - I have created an interface and supporting fuctions and methods for designing.  
